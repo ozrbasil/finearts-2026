@@ -207,7 +207,7 @@ body.adm .btn:hover{transform:none;filter:brightness(1.1);box-shadow:none}body.a
 body.adm .btn.s{background:#141414;color:var(--tx);border:1px solid #333}body.adm .btn.s:hover{background:#222}
 body.adm .btn.d{background:var(--ac);color:var(--cr)}
 body.adm select,body.adm input,body.adm textarea{background:#000;color:var(--tx);border:1px solid #333}
-body.adm select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f1e7e8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+body.adm select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23f1e7e8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px 9px}
 body.adm select option{background:#000;color:var(--tx)}
 body.adm td,body.adm th{border-bottom:1px solid #333}
 body.adm .tag{background:#222;color:var(--mu);animation:none}
