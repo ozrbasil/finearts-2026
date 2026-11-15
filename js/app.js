@@ -143,32 +143,34 @@ if(bi){
   if(ov>0){x.fillStyle="rgba(0,0,0,"+ov+")";x.fillRect(0,0,1080,1350)}
 }
 const T3=t===3,NM=T3?"#c42727":T.ac,OT=T3?"#333333":T.ac,RT=T3?"#333333":T.tx,
-F="Sora,system-ui,sans-serif",L=150,
-fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.035*z)+"px"};
+F="Sora,system-ui,sans-serif",L=140,
+fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.04*z)+"px"};
 
-const no=pubList().indexOf(c)+1||1;
-x.textAlign="right";x.fillStyle=OT;fo(700,32);
-x.fillText("Result No "+String(no).padStart(2,"0"),960,140);
+const no=pubList().indexOf(c)+1||1,NO=String(no).padStart(2,"0"),R=948;
+x.textAlign="right";x.fillStyle=OT;
+fo(700,36);x.fillText(NO,R,155);const nw=x.measureText(NO).width;
+fo(400,28);x.fillText("Result No ",R-nw,155);
 
 x.textAlign="left";
-x.fillStyle=NM;fo(800,68);
+x.fillStyle=NM;fo(700,50);
 let ln=[],cur="";
 c.name.split(" ").forEach(w=>{const tt=cur?cur+" "+w:w;if(x.measureText(tt).width>800&&cur){ln.push(cur);cur=w}else cur=tt});
 ln.push(cur);ln=ln.slice(0,2);
-ln.forEach((q,i)=>x.fillText(q,L,350+i*70,800));
+ln.forEach((q,i)=>x.fillText(q,L,381+i*62,800));
 
 const rs=c.res.slice().sort((a,b)=>a.pos-b.pos).slice(0,10),
-y0=496+(ln.length-1)*70+(ln.length>1?20:0),
-h=Math.min(108,(1130-y0)/Math.max(rs.length,1)),s=Math.min(1,h/108);
+b0=477+(ln.length-1)*62,
+nr=Math.max(rs.length,1),
+pt=Math.min(100.5,nr>1?(1120-b0)/(nr-1):100.5),s=Math.min(1,pt/100.5);
 rs.forEach((r,i)=>{
-  const ry=y0+i*h;
-  x.fillStyle=RT;fo(400,36*s);
-  x.fillText(["1ST","2ND","3RD"][r.pos-1]||r.pos+"TH",L,ry+12*s);
-  fo(700,38*s);x.fillText(r.name,254,ry,780);
-  fo(400,28*s);x.fillText([resK(r),r.h].filter(Boolean).join("  •  "),254,ry+31*s,780);
+  const by=b0+i*pt;
+  x.fillStyle=RT;
+  fo(700,28*s);x.fillText(["1st","2nd","3rd"][r.pos-1]||r.pos+"th",L,by+10*s);
+  fo(700,36*s);x.fillText(r.name,224,by,740);
+  fo(300,24*s);x.fillText([resK(r),r.h].filter(Boolean).join(" • "),224,by+30*s,740);
 });
 
-x.fillStyle=OT;fo(700,22);x.fillText(S.set.posterNote,L,1202);
+x.fillStyle=OT;fo(400,24);x.fillText(S.set.posterNote,L,1208);
 return cv}
 function toast(m){let e=$("#ts");if(!e){e=document.createElement("div");e.id="ts";e.style.cssText="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--am);color:#333;border:2px solid #333;padding:10px 18px;border-radius:20px;font-weight:700;z-index:30;max-width:90%;text-align:center";document.body.appendChild(e)}e.textContent=m;e.style.bottom="28px";e.style.display="block";clearTimeout(e.t);e.t=setTimeout(()=>e.style.display="none",3000)}
 window.alert=toast;
@@ -294,4 +296,4 @@ document.querySelectorAll("#app h2,#app .card,#app .rc,#app .grid>*,#app .bkw").
 function render(){const [r,q]=(location.hash.slice(1)||"home").split("?");nav(r);document.body.classList.toggle("adm",r==="admin");document.documentElement.classList.toggle("adm",r==="admin");bnRender();document.title=S.set.name+" | Annual Arts & Cultural Fest";$("#ft").textContent=S.set.footer+(S.upd?" • Updated "+new Date(S.upd).toLocaleString():"");clearInterval(tmr);
 $("#app").innerHTML=!LOADED&&r!=="admin"&&r!=="brochure"?'<div class="card mu">Loading…</div>':r==="result"?result(q):r==="gallery"?`<h2>Festival Gallery</h2>${gal()}<p>${morePhotos()}</p>`:r==="about"?about():r==="brochure"?brochure():r==="schedule"?schedule():r==="admin"?(admin?adminPanel():login()):home();
 if(LOADED&&(r==="home"||!r)){fill();tick();tmr=setInterval(tick,1000)}if(window.LK!==location.hash){window.scrollTo(0,0);window.LK=location.hash}fx();bar();if(r==="brochure")bkUI();reveal(r);if(r==="admin")noSpell()}
-addEventListener("hashchange",render);[0,1,2].forEach(loadBg);loadLogo();const rs=()=>{try{const sc=sessionStorage.getItem("sc");if(sc){sessionStorage.removeItem("sc");window.scrollTo(0,+sc)}}catch(e){}};if(REMOTE){try{const hs=sessionStorage.getItem("hs");if(hs&&!location.hash)location.hash=hs;sessionStorage.removeItem("hs")}catch(e){}}render();loadData(true);setInterval(()=>loadData(false),8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadData(false)});setTimeout(rs,300);if(document.fonts)Promise.all(["400","600","700","800"].map(w=>document.fonts.load(w+" 20px Sora"))).then(render).catch(()=>{});
+addEventListener("hashchange",render);[0,1,2].forEach(loadBg);loadLogo();const rs=()=>{try{const sc=sessionStorage.getItem("sc");if(sc){sessionStorage.removeItem("sc");window.scrollTo(0,+sc)}}catch(e){}};if(REMOTE){try{const hs=sessionStorage.getItem("hs");if(hs&&!location.hash)location.hash=hs;sessionStorage.removeItem("hs")}catch(e){}}render();loadData(true);setInterval(()=>loadData(false),8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadData(false)});setTimeout(rs,300);if(document.fonts)Promise.all(["300","400","600","700","800"].map(w=>document.fonts.load(w+" 20px Sora"))).then(render).catch(()=>{});
