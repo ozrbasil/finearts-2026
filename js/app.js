@@ -144,7 +144,7 @@ if(bi){
 }
 const T3=t===3,NM=T3?"#c42727":T.ac,OT=T3?"#333333":T.ac,RT=T3?"#333333":T.tx,
 F="Sora,system-ui,sans-serif",L=140,
-fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.04*z)+"px"};
+fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.05*z)+"px"};
 
 const no=pubList().indexOf(c)+1||1,NO=String(no).padStart(2,"0"),R=948;
 x.textAlign="right";x.fillStyle=OT;
