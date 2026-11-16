@@ -1,0 +1,94 @@
+/* =====================================================================
+   ADMIN DASHBOARD LAYOUT – sidebar + top bar (same black theme as before)
+   Loads AFTER style.css and news.css. Only the public site is unaffected.
+   ===================================================================== */
+body.ash{background:#000;min-height:100vh}
+body.ash nav,body.ash footer{display:none}
+body.ash main{max-width:none;margin:0;padding:0;overflow-x:visible}
+body.ash [hidden]{display:none!important}
+
+.ash-shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh;background:#000}
+
+/* ---------- Sidebar ---------- */
+.ash-side{position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;background:#000;border-right:1px solid #333;padding:18px 12px 14px;scrollbar-width:thin}
+.ash-brand{display:flex;align-items:center;gap:10px;padding:4px 10px 18px}
+.ash-brand img{height:30px;width:auto;object-fit:contain}
+.ash-brand b{font-size:14px;letter-spacing:1.5px;color:var(--am);line-height:1.25}
+.ash-lbl{font-size:11px;letter-spacing:1.6px;color:var(--mu);padding:8px 12px 6px}
+.ash-menu{display:flex;flex-direction:column;gap:3px}
+.ash-menu button{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;color:var(--cr);padding:10px 12px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left;transition:background .2s,color .2s}
+.ash-menu button svg{flex:none;opacity:.85}
+.ash-menu button:hover{background:#141414}
+.ash-menu button.on{background:var(--am);color:#000}
+.ash-menu button.on svg{opacity:1}
+.ash-foot{margin-top:auto;padding:14px 12px 0;font-size:12px;color:var(--mu)}
+.ash-foot a{color:var(--am)}
+
+/* ---------- Main column ---------- */
+.ash-main{min-width:0;display:flex;flex-direction:column}
+.ash-top{position:sticky;top:0;z-index:4;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 22px;background:#000;border-bottom:1px solid #333}
+.ash-search{flex:1 1 220px;max-width:300px;min-width:160px}
+.ash-sel{width:auto;flex:0 0 auto;min-width:170px}
+.ash-top .btn{padding:9px 18px}
+.ash-user{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--mu)}
+.ash-body{padding:22px;min-width:0}
+
+/* page titles */
+.ash-page>h2{margin:0 0 4px;font-size:26px;font-weight:800}
+.ash-page>h2::after{margin-top:6px}
+.ash-sub{font-size:13px;margin-bottom:18px}
+
+/* ---------- Dashboard ---------- */
+.ash-dash{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
+.ash-dash>.card{margin-bottom:0}
+.ash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ash-stat{background:#0c0c0c;border:1px solid #333;border-radius:14px;padding:16px 16px 14px;margin-bottom:0}
+.ash-stat-h{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:1.4px;color:var(--mu);font-weight:700}
+.ash-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#1a1a1a;border:1px solid #333;color:var(--am)}
+.ash-stat b{display:block;font-size:30px;line-height:1.1;margin-top:12px;color:var(--tx)}
+.ash-stat small{display:block;color:var(--mu);font-size:12px;margin-top:2px}
+.ash-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+.ash-charts>.card{margin-bottom:0}
+.ash-card-h{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:4px;color:var(--tx)}
+.ash-card-h svg{color:var(--am)}
+.ash-hb{display:grid;grid-template-columns:minmax(80px,130px) minmax(0,1fr) 36px;gap:10px;align-items:center;margin:10px 0;font-size:13px}
+.ash-hb span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-hb>div{height:14px;background:#1a1a1a;border:1px solid #333;border-radius:8px;overflow:hidden}
+.ash-hb i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--am));border-radius:8px}
+.ash-hb b{text-align:right;font-weight:700}
+
+/* leaderboard (right column) */
+.ash-lb{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #333;border-radius:12px;margin-bottom:8px;background:#0c0c0c}
+.ash-lb.t1{border-color:var(--am);background:rgba(248,189,90,.12)}
+.ash-lb.t2{border-color:var(--cr);background:rgba(241,231,232,.06)}
+.ash-lb.t3{border-color:var(--ac);background:rgba(196,39,39,.12)}
+.ash-rk{width:26px;height:26px;border-radius:50%;background:#1a1a1a;border:1px solid #333;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.ash-lb.t1 .ash-rk{background:var(--am);color:#000;border-color:var(--am)}
+.ash-ln{flex:1;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ash-lb b{font-size:14px;white-space:nowrap}
+.ash-lb small{color:var(--mu);font-weight:400}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1180px){.ash-dash{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){
+  .ash-shell{grid-template-columns:minmax(0,1fr)}
+  .ash-side{position:static;height:auto;overflow:visible;border-right:0;border-bottom:1px solid #333;padding:10px 10px 8px}
+  .ash-brand{padding:2px 6px 8px}
+  .ash-lbl,.ash-foot{display:none}
+  .ash-menu{flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:2px;scrollbar-width:none}
+  .ash-menu::-webkit-scrollbar{display:none}
+  .ash-menu button{width:auto;flex:none;white-space:nowrap;padding:8px 12px;font-size:13px}
+  .ash-body{padding:14px}
+  .ash-top{padding:10px 14px}
+  .ash-search{max-width:none}
+  .ash-user{margin-left:0}
+  .ash-charts{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .ash-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ash-stat b{font-size:24px}
+  .ash-page>h2{font-size:22px}
+}
+
+/* keep action buttons in rows from stretching across the whole line */
+.ash-page .row>.btn{flex:0 0 auto;min-width:0}
