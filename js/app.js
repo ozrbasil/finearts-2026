@@ -18,7 +18,7 @@ function earnedPoints(h){let p=0;S.comps.forEach(c=>(c.res||[]).forEach(r=>{if(r
 function standings(){return S.houses.map(h=>({n:h.n,p:(+h.b||0)+earnedPoints(h)})).sort((a,b)=>b.p-a.p)}
 const lbMode=()=>S.lb||{mode:"after",n:0};
 function lbVisible(){const m=lbMode();if(m.mode==="no")return false;const top=Math.max(0,...standings().map(x=>x.p));return top>=(+m.n||0)}
-function lbTable(st){return st.map((h,i)=>`<div class="ash-lb${i<3?" t"+(i+1):""}"><span class="ash-rk">${i+1}</span><span class="ash-ln">${esc(h.n)}</span><b>${h.p} <small>pts</small></b></div>`).join("")||'<div class="mu" style="font-size:13px">No teams yet.</div>'}
+function lbTable(st){const md=["🥇","🥈","🥉"];return st.map((h,i)=>`<div class="ash-lb${i<3?" t"+(i+1):""}"><span class="ash-rk"${i<3?' style="background:none;border:0;font-size:18px;width:auto;height:auto"':""}>${i<3?md[i]:i+1}</span><span class="ash-ln">${esc(h.n)}</span><b>${h.p} <small>pts</small></b></div>`).join("")||'<div class="mu" style="font-size:13px">No teams yet.</div>'}
 let pointsNeedConfirm=false;
 document.addEventListener("input",e=>{if(e.target&&e.target.matches('#app input[data-a="hc"]'))pointsNeedConfirm=true});
 function nav(r){$("#nav").innerHTML='<a href="#home" title="Home" onclick="tap5(event)" style="margin-right:auto;padding:0;background:none">'+(S.set.logo?'<img src="'+S.set.logo+'" alt="" style="height:30px;vertical-align:middle;margin-right:8px">':'')+'<b>'+esc(S.set.name)+'</b></a>'+[["home","Home"],["result","Results"],["gallery","Gallery"],["about","About"],["schedule","Schedule"]].map(([h,t])=>`<a href="#${h}" class="${r===h?"on":""}">${t}</a>`).join("")}
@@ -241,6 +241,7 @@ function admFilter(q){q=(q||"").trim().toLowerCase();document.querySelectorAll("
 const admPg=(k,t,sub,h)=>`<section class="ash-page" data-p="${k}"${ASEC===k?"":" hidden"}><h2>${t}</h2><div class="mu ash-sub">${sub}</div>${h}</section>`;
 function admStat(k,label,val,sub){return `<div class="ash-stat"><div class="ash-stat-h"><span>${label}</span><span class="ash-ic">${ico(k,16)}</span></div><b>${val}</b><small>${sub}</small></div>`}
 function admBars(list){const m=Math.max(1,...list.map(x=>x.v));return list.length?list.map(x=>`<div class="ash-hb"><span>${esc(x.n)}</span><div><i style="width:${x.v/m*100}%"></i></div><b>${x.v}</b></div>`).join(""):'<div class="mu" style="font-size:13px">No data yet.</div>'}
+function tlCard(){const lb=lbTable(standings());return `<div class="card"><div class="ash-card-h"><span style="display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:rgba(248,189,90,.12);border:1px solid rgba(248,189,90,.35)">${ico("trophy",18)}</span> Team Leaderboard</div><div class="mu" style="font-size:12px;margin-bottom:12px">Points from published results</div>${lb}</div>`}
 function admDash(){
  const s=S,comps=s.comps||[],parts=s.parts||[],houses=s.houses||[],pub=comps.filter(c=>c.pub).length,pend=comps.length-pub,st=standings();
  const byTeam=houses.map(h=>({n:h.n,v:parts.filter(p=>p.h===h.n).length})).sort((a,b)=>b.v-a.v);
@@ -251,7 +252,7 @@ function admDash(){
   <div class="ash-stats">${admStat("part","PARTICIPANTS",parts.length,"Registered")}${admStat("comp","COMPETITIONS",comps.length,pub+" published / "+pend+" pending")}${admStat("teams","TEAMS",houses.length,"Participating")}${admStat("res","RESULTS PUBLISHED",pub,"Official results")}${admStat("sched","SCHEDULE DAYS",(s.sched||[]).length,"Date headings")}${admStat("gal","GALLERY",(s.gallery||[]).length,"Photos")}</div>
   <div class="ash-charts"><div class="card"><div class="ash-card-h">${ico("teams",18)} Participants by Team</div>${admBars(byTeam)}</div><div class="card"><div class="ash-card-h">${ico("part",18)} Participants by Class</div>${admBars(byCls)}</div></div>
  </div>
- <div class="card"><div class="ash-card-h">${ico("trophy",18)} Team Leaderboard</div><div class="mu" style="font-size:12px;margin-bottom:12px">Points from published results</div>${lb}</div></div>
+ ${tlCard()}</div>
  <div class="card mu" style="font-size:13px">Every add, remove or edit is staged first. Press <b>Update site</b> at the top to publish everything. Visitors' phones refresh by themselves within a few seconds.</div>`;
 }
 function teamsCard(){const s=S;s.houses=s.houses||[];return `<div class="card"><b>Teams</b> <span class="mu">(manually edit the current total points for each team)</span><div class="tbl"><table><tr><th>TEAM</th><th>CURRENT POINTS</th><th></th></tr>${s.houses.map((h,i)=>`<tr><td><input value="${esc(h.n)}" data-a="hn" data-i="${i}"></td><td><input type="number" min="0" step="1" style="width:110px" value="${standings().find(x=>x.n===h.n)?.p||0}" data-a="hc" data-i="${i}" aria-label="Current points for ${esc(h.n)}"></td><td><button class="btn d" onclick="S.houses.splice(${i},1);save();render()">×</button></td></tr>`).join("")}</table></div><div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" onclick="confirmPoints()">✓ Confirm Team Points</button><span class="mu" style="font-size:12px">Confirm the edited totals before publishing.</span></div><br><br>
@@ -271,7 +272,7 @@ ${admPg("dash","Dashboard","Real-time operations dashboard – manage teams, com
 ${admPg("teams","Teams & Points","Edit each team's total points, add or remove teams",teamsCard())}
 ${admPg("comp","Competitions","Create competitions",addCompCard())}
 ${admPg("part","Participants","Add participants one by one or import from Excel",importCard()+partCard())}
-${admPg("res","Results","Publish results and edit competition results",pubCard()+compListCard())}
+${admPg("res","Results","Publish results and edit competition results",`<div class="ash-dash"><div>${pubCard()+compListCard()}</div><div>${tlCard()}</div></div>`)}
 ${admPg("tpl","Templates","Set the poster templates shown to visitors on Results",tplCard())}
 ${admPg("sched","Schedule","Upload or edit the festival schedule",schedCard())}
 ${admPg("stars","Stars","Choose whether the top participants are shown to the public",starsCard())}
