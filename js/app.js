@@ -227,10 +227,11 @@ sched:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3
 stars:'<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
 gal:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>',
 upd:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+tpl:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
 site:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>'
 };
 const ico=(k,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${AICO[k]||""}</svg>`;
-const ASEC_MENU=[["dash","Dashboard"],["teams","Teams & Points"],["comp","Competitions"],["part","Participants"],["res","Results"],["sched","Schedule"],["stars","Stars"],["gal","Gallery"],["site","Site Settings"],["upd","Site Updates"]];
+const ASEC_MENU=[["dash","Dashboard"],["teams","Teams & Points"],["comp","Competitions"],["part","Participants"],["res","Results"],["tpl","Templates"],["sched","Schedule"],["stars","Stars"],["gal","Gallery"],["site","Site Settings"],["upd","Site Updates"]];
 function admSec(k){ASEC=k;document.querySelectorAll(".ash-page").forEach(p=>p.hidden=p.dataset.p!==k);document.querySelectorAll(".ash-menu button").forEach(b=>b.classList.toggle("on",b.dataset.p===k));window.scrollTo(0,0)}
 function admFilter(q){q=(q||"").trim().toLowerCase();document.querySelectorAll(".ash-menu button").forEach(b=>{b.hidden=!!q&&!b.dataset.l.toLowerCase().includes(q)})}
 const admPg=(k,t,sub,h)=>`<section class="ash-page" data-p="${k}"${ASEC===k?"":" hidden"}><h2>${t}</h2><div class="mu ash-sub">${sub}</div>${h}</section>`;
@@ -264,9 +265,10 @@ function adminPanel(){const s=S;
 <div class="ash-body">
 ${admPg("dash","Dashboard","Real-time operations dashboard – manage teams, competitions, results and the site",admDash())}
 ${admPg("teams","Teams & Points","Edit each team's total points, add or remove teams",teamsCard())}
-${admPg("comp","Competitions","Create competitions and edit their results",addCompCard()+compListCard())}
+${admPg("comp","Competitions","Create competitions",addCompCard())}
 ${admPg("part","Participants","Add participants one by one or import from Excel",importCard()+partCard())}
-${admPg("res","Results","Publish results and set the poster templates",pubCard()+tplCard())}
+${admPg("res","Results","Publish results and edit competition results",pubCard()+compListCard())}
+${admPg("tpl","Templates","Set the poster templates shown to visitors on Results",tplCard())}
 ${admPg("sched","Schedule","Upload or edit the festival schedule",schedCard())}
 ${admPg("stars","Stars","Choose whether the top participants are shown to the public",starsCard())}
 ${admPg("gal","Gallery","Upload and manage festival photos",galCard())}
