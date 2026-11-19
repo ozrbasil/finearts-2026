@@ -225,3 +225,17 @@ body.adm h2::after{height:4px}
 body.adm .grid img{border:1px solid #333;box-shadow:none}body.adm .grid img:hover{transform:none;box-shadow:none}
 body.adm .tabs{background:#000;border:1px solid #333}body.adm .tabs button{color:var(--mu)}
 body.adm footer{background:#000;border-top:1px solid #333}
+
+/* ===== Schedule: OFF STAGE / ON STAGE tabs + ON STAGE layout ===== */
+.sch-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px}
+.sch-tab{display:inline-block;background:var(--cr);color:var(--ink);border:2px solid var(--bd);padding:10px 22px;border-radius:26px;font-family:inherit;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:3px 3px 0 var(--bd);transition:transform .18s,box-shadow .18s,background .2s,color .2s}
+.sch-tab:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--bd)}
+.sch-tab:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--bd)}
+.sch-tab.act{background:#C62A2F;color:#fff}
+.on-day{padding:18px}
+.on-date{font-size:22px;font-weight:800;color:var(--ac);margin:4px 0 10px}
+.on-stage{border-top:2px dashed var(--bd);padding-top:12px;margin-top:12px}
+.on-stage-h{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.on-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:6px;font-weight:600}
+.on-time{white-space:nowrap;font-weight:800;color:var(--ac)}
+@media (max-width:560px){.on-row{flex-direction:column;align-items:flex-start;gap:2px}}
