@@ -339,7 +339,7 @@ function onSchedule(){
   return d.map(x=>{
     const stages=[];
     x.r.forEach(r=>{const k=(r.s||"").trim()||"Stage";let st=stages.find(q=>q.n===k);if(!st){st={n:k,r:[]};stages.push(st)}st.r.push(r)});
-    return `<div class="on-wrap"><div class="on-date">${esc(x.d)}</div><div class="card on-day">${stages.map((q,qi)=>`<div class="on-stage${qi?" on-sep":""}"><div class="on-stage-h">${esc(q.n)}</div>${q.r.map(r=>`<div class="on-row"><span class="on-name">${esc(r.i)}</span><span class="on-time">${esc(r.t)}</span></div>`).join("")}</div>`).join("")}</div></div>`;
+    return `<div class="on-wrap"><div class="on-date">${esc(x.d)}</div><div class="on-card">${stages.map((q,qi)=>`<div class="on-stage${qi?" on-sep":""}"><div class="on-stage-h">${esc(q.n)}</div>${q.r.map(r=>`<div class="on-row"><span class="on-name">${esc(r.i)}</span><span class="on-time">${esc(r.t)}</span></div>`).join("")}</div>`).join("")}</div></div>`;
   }).join("");
 }
 function schedCard(){const d=S.sched||[];return `<div class="card"><b>OFF STAGE</b> <span class="mu" style="font-size:13px">(shown when visitors tap “OFF STAGE”)</span><br><br>
