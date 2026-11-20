@@ -281,6 +281,36 @@ function admDash(){
 function teamsCard(){const s=S;s.houses=s.houses||[];return `<div class="card"><b>Teams</b> <span class="mu">(manually edit the current total points for each team)</span><div class="tbl"><table><tr><th>TEAM</th><th>CURRENT POINTS</th><th></th></tr>${s.houses.map((h,i)=>`<tr><td><input value="${esc(h.n)}" data-a="hn" data-i="${i}"></td><td><input type="number" min="0" step="1" style="width:110px" value="${standings().find(x=>x.n===h.n)?.p||0}" data-a="hc" data-i="${i}" aria-label="Current points for ${esc(h.n)}"></td><td><button class="btn d" onclick="S.houses.splice(${i},1);save();render()">×</button></td></tr>`).join("")}</table></div><div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" onclick="confirmPoints()">✓ Confirm Team Points</button><span class="mu" style="font-size:12px">Confirm the edited totals before publishing.</span></div><br><br>
 <div class="row"><input id="hn" placeholder="New team name"><button class="btn" onclick="if($('#hn').value){S.houses.push({n:$('#hn').value,b:0});save();render()}">Add team</button></div></div>`}
 function addCompCard(){return `<div class="card"><b>Add competition</b><br><br><div class="row"><select id="ct"><option>Individual</option><option>Group</option></select><input id="cn" placeholder="Competition name"><button class="btn" onclick="addC()">Add</button></div></div>`}
+
+// ===== Competitions list (admin): Individual & Group sections, Edit + Delete =====
+let CEDIT=null;
+function compManageCard(){
+  const comps=S.comps||[];
+  const ind=comps.filter(c=>c.type!=="Group"), grp=comps.filter(c=>c.type==="Group");
+  const sec=(title,list)=>`<div style="margin-top:18px"><b>${title}</b> <span class="mu">(${list.length})</span></div>`+(list.length?list.map(compRow).join(""):`<div class="mu" style="font-size:13px;margin:8px 0">No ${title.toLowerCase()} competitions yet.</div>`);
+  return `<div class="card"><b>All competitions</b> <span class="mu">(${comps.length})</span>${sec("Individual",ind)}${sec("Group",grp)}</div>`;
+}
+function compRow(c){
+  if(CEDIT===c.id){
+    return `<div class="card" style="margin-top:10px;background:var(--bg)"><div class="row"><input value="${esc(c.name)}" placeholder="Competition name" data-a="cn" data-i="${c.id}" oninput="cSync(${c.id},'cn',this.value)" style="font-weight:700"><select style="width:auto" data-a="ct" data-i="${c.id}" onchange="cSync(${c.id},'ct',this.value)"><option ${c.type==="Group"?"":"selected"}>Individual</option><option ${c.type==="Group"?"selected":""}>Group</option></select></div><div class="row" style="margin-top:8px"><input value="${esc((c.pts||[]).join(","))}" placeholder="Marks (blank = default)" title="Custom marks for this competition, e.g. 10,7,5. Blank = default" data-a="cp" data-i="${c.id}" oninput="cSync(${c.id},'cp',this.value)"></div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" onclick="CEDIT=null;render()">Done</button><button class="btn d" onclick="cf(this,()=>delComp(${c.id}))">Delete</button></div></div>`;
+  }
+  const st=c.pub?'<span class="pb">Published</span>':'<span class="mu" style="font-size:12px">Pending</span>';
+  return `<div class="row" style="margin-top:10px;align-items:center;justify-content:space-between"><div><b>${esc(c.name)}</b> <span class="mu" style="font-size:12px">· Marks: ${(c.pts||S.pts).join(", ")}${c.pts?"":" (default)"} · ${(c.res||[]).length} result(s)</span> ${st}</div><div style="display:flex;gap:8px"><button class="btn s" style="padding:4px 14px" onclick="CEDIT=${c.id};render()">Edit</button><button class="btn d" style="padding:4px 14px" onclick="cf(this,()=>delComp(${c.id}))">Delete</button></div></div>`;
+}
+function cSync(id,key,v){
+  AP[key](String(id),undefined,v);
+  document.querySelectorAll(`#app [data-a="${key}"][data-i="${id}"]`).forEach(el=>{if(el.value!==String(v))el.value=v});
+  save();
+}
+function delComp(id){
+  const c=S.comps.find(x=>x.id===id);if(!c)return;
+  S.comps=S.comps.filter(x=>x.id!==id);
+  S.parts.forEach(p=>{p.comps=(p.comps||[]).filter(x=>x!==id)});
+  {const pth=imgPath(c.poster);if(pth)PD.push(pth)}
+  if(CEDIT===id)CEDIT=null;
+  save();render();toast("Competition deleted — press Update site to publish");
+}
+// ===== end Competitions list =====
 function compListCard(){const s=S;s.comps=s.comps||[];return `<div class="card"><b>Competitions & results</b>${s.comps.map(c=>`<div style="margin-top:12px"><input style="width:200px;font-weight:700" value="${esc(c.name)}" data-a="cn" data-i="${c.id}"> <input style="width:130px" value="${(c.pts||[]).join(",")}" placeholder="Marks (default)" title="Custom marks for this competition, e.g. 10,7,5. Blank = default" data-a="cp" data-i="${c.id}"> <select style="width:auto" title="Group competitions are not counted in Stars of Fine Arts" data-a="ct" data-i="${c.id}" onchange="applyAll();save();render()"><option ${c.type==="Group"?"":"selected"}>Individual</option><option ${c.type==="Group"?"selected":""}>Group</option></select> <button class="btn d" style="padding:2px 10px" onclick="cf(this,()=>{S.comps=S.comps.filter(x=>x.id!==${c.id});save();render()})">Delete</button>${c.poster?` <button class="btn s" style="padding:2px 10px" onclick="delete S.comps.find(x=>x.id===${c.id}).poster;save();render()">remove poster</button>`:""}${c.res.map((r,i)=>`<div style="margin-top:6px">${r.pos}. <input style="width:180px" value="${esc(r.name)}" data-a="rn" data-i="${c.id}" data-j="${i}"> • <input style="width:100px" placeholder="Class" value="${esc(resK(r))}" data-a="rk" data-i="${c.id}" data-j="${i}"> • <select style="width:auto" data-a="rh" data-i="${c.id}" data-j="${i}">${hsel(r.h)}</select> <button class="btn d" style="padding:2px 10px" onclick="S.comps.find(x=>x.id===${c.id}).res.splice(${i},1);save();render()">remove</button></div>`).join("")}</div>`).join("")}</div>`}
 function galCard(){const s=S;s.gallery=s.gallery||[];return `<div class="card"><b>Gallery upload</b><br><br><input type="file" accept="image/*" multiple onchange="up(this.files)">${s.gallery.length?`<div class="grid" style="margin-top:12px">${s.gallery.map((g,i)=>`<div><img src="${g}"><button class="btn d" style="width:100%;margin-top:4px" onclick="delG(${i})">Delete</button></div>`).join("")}</div>`:""}</div>`}
 function resetCard(){return `<div class="card"><button class="btn d" onclick="cf(this,()=>{fresh();save();[0,1,2].forEach(loadBg);loadLogo();render()})">Reset all data</button></div>`}
@@ -293,7 +323,7 @@ function adminPanel(){const s=S;
 <div class="ash-body">
 ${admPg("dash","Dashboard","Real-time operations dashboard – manage teams, competitions, results and the site",admDash())}
 ${admPg("teams","Teams & Points","Edit each team's total points, add or remove teams",teamsCard())}
-${admPg("comp","Competitions","Create competitions",addCompCard())}
+${admPg("comp","Competitions","Create, edit and delete competitions",addCompCard()+compManageCard())}
 ${admPg("part","Participants","Add participants one by one or import from Excel",importCard()+partCard())}
 ${admPg("res","Results","Publish results and edit competition results",`<div class="ash-dash"><div>${pubCard()+compListCard()}</div><div>${resCard()}</div></div>`)}
 ${admPg("tpl","Templates","Set the poster templates shown to visitors on Results",tplCard())}
