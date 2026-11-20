@@ -359,7 +359,9 @@ function groupCard(){
   const gc=grpComps(),gp=S.gparts||[];
   if(!gc.length)return `<div class="card mu">No Group competitions yet. Create one with type "Group" on the Competitions page first.</div>`;
   return `<div class="card"><b>Group participants</b> <span class="mu">(${gp.length})</span><br><br>
-<div class="row"><select id="gcSel">${gc.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select><input id="gnName" placeholder="Name"><select id="gtSel">${hopts()}</select><button class="btn" onclick="addG()">Add</button></div>
+<div class="row" style="align-items:center"><b style="min-width:110px">Competition</b><select id="gcSel">${gc.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select></div>
+${[1,2,3,4].map(i=>`<div class="card" style="background:var(--bg);margin-top:10px"><div class="row" style="align-items:center"><b style="min-width:110px">Name ${String(i).padStart(2,"0")}</b><input id="gnName${i}" placeholder="Participant name"></div><div class="row" style="align-items:center;margin-top:8px"><b style="min-width:110px">Team</b><select id="gtSel${i}">${hopts()}</select></div></div>`).join("")}
+<button class="btn" style="margin-top:12px" onclick="addG()">Add participants</button>
 <br><b>Bulk add from Excel</b>
 <div class="mu" style="font-size:13px;margin:4px 0 8px">Columns: Competition | Name | Team. Paste rows from Excel, or upload an .xlsx / .csv file. The competition must already exist as a Group competition. Missing teams are created automatically.</div>
 <textarea id="gbk" rows="4" placeholder="Group Song\tAnsif P\tTeam Zahora"></textarea><br><br>
@@ -368,12 +370,19 @@ ${gp.length?`<div class="tbl" style="margin-top:14px"><table><tr><th>COMPETITION
 </div>`;
 }
 function addG(){
-  const c=$("#gcSel").value,n=$("#gnName").value.trim(),h=$("#gtSel").value;
+  const c=$("#gcSel").value;
   if(!c)return toast("Create a Group competition first");
-  if(!n)return toast("Type the participant name");
   S.gparts=S.gparts||[];
-  if(S.gparts.some(x=>x.c===+c&&x.n.toLowerCase()===n.toLowerCase()))return toast("Already added to this competition");
-  S.gparts.push({n,c:+c,h});save();render();
+  let add=0,dup=0;
+  [1,2,3,4].forEach(i=>{
+    const n=($("#gnName"+i).value||"").trim(),h=$("#gtSel"+i).value;
+    if(!n)return;
+    if(S.gparts.some(x=>x.c===+c&&x.n.toLowerCase()===n.toLowerCase())){dup++;return}
+    S.gparts.push({n,c:+c,h});add++;
+  });
+  if(!add)return toast(dup?"Those names are already in this competition":"Type at least one name");
+  save();render();
+  toast(add+" added"+(dup?", "+dup+" already in this competition":""));
 }
 function gImport(rows){
   rows=rows.map(a=>a.map(x=>String(x==null?"":x).trim())).filter(a=>a.some(Boolean));
