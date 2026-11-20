@@ -360,7 +360,7 @@ function groupCard(){
   if(!gc.length)return `<div class="card mu">No Group competitions yet. Create one with type "Group" on the Competitions page first.</div>`;
   return `<div class="card"><b>Group participants</b> <span class="mu">(${gp.length})</span><br><br>
 <div class="row" style="align-items:center"><b style="min-width:110px">Competition</b><select id="gcSel">${gc.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}</select></div>
-${[1,2,3,4].map(i=>`<div class="card" style="background:var(--bg);margin-top:10px"><div class="row" style="align-items:center"><b style="min-width:110px">Name ${String(i).padStart(2,"0")}</b><input id="gnName${i}" placeholder="Participant name"></div><div class="row" style="align-items:center;margin-top:8px"><b style="min-width:110px">Team</b><select id="gtSel${i}">${hopts()}</select></div></div>`).join("")}
+${[1,2,3,4].map(i=>`<div class="card" style="background:var(--bg);margin-top:10px"><div class="row" style="align-items:center"><input id="gnName${i}" placeholder="Participant name"></div><div class="row" style="align-items:center;margin-top:8px"><b style="min-width:110px">Team</b><select id="gtSel${i}">${hopts()}</select></div></div>`).join("")}
 <button class="btn" style="margin-top:12px" onclick="addG()">Add participants</button>
 <br><b>Bulk add from Excel</b>
 <div class="mu" style="font-size:13px;margin:4px 0 8px">Columns: Competition | Name | Team. Paste rows from Excel, or upload an .xlsx / .csv file. The competition must already exist as a Group competition. Missing teams are created automatically.</div>
