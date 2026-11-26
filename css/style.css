@@ -6,7 +6,7 @@
    ===================================================================== */
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --bg:#FFFFFF;--card:#FFFFFF;--tx:#333333;--mu:rgba(51,51,51,.68);
---ac:#e33126;--ac2:#8ec33f;--bl:#26a9e0;--am:#f89e1f;--cr:#FFFFFF;--bd:#333333;--ink:#333333;color-scheme:only light}
+--ac:#e33126;--ac2:#8ec33f;--am:#f89e1f;--cr:#FFFFFF;--bd:#333333;--ink:#333333;color-scheme:only light}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 body{margin:0;background-color:var(--bg);background-image:radial-gradient(rgba(51,51,51,.10) 1.2px,transparent 1.5px);background-size:22px 22px;color:var(--tx);font:16px/1.5 "Sora",system-ui,-apple-system,Segoe UI,sans-serif}button{font-family:inherit}
 a{color:inherit;text-decoration:none}
@@ -40,7 +40,7 @@ main{max-width:1000px;margin:auto;padding:20px}
 .sunglow{left:31%;top:46.5%;width:45%;height:25.4%;border-radius:50%;background:radial-gradient(circle,rgba(255,238,170,.85) 0%,rgba(248,158,31,.4) 42%,rgba(248,158,31,0) 70%);mix-blend-mode:soft-light;animation:glow 4.5s ease-in-out infinite alternate}
 @keyframes glow{from{opacity:.35;transform:scale(.94)}to{opacity:1;transform:scale(1.07)}}
 .hero small{display:inline-block;background:var(--ink);color:var(--am);letter-spacing:3px;font-size:12px;font-weight:700;padding:7px 18px;border-radius:30px}
-.hero h1{font-size:clamp(42px,11vw,92px);line-height:1.05;margin:14px 0 10px;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(3px 3px 0 var(--ink));will-change:transform,opacity}
+.hero h1{font-size:clamp(42px,11vw,92px);line-height:1.05;margin:14px 0 10px;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 22%,var(--am) 45%,var(--ac2) 72%,var(--ac2) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(3px 3px 0 var(--ink));will-change:transform,opacity}
 .hero p{display:inline-block;max-width:560px;margin:6px auto;color:var(--ink);font-weight:600;font-size:15px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;border-radius:0!important;text-shadow:0 0 5px var(--cr),0 0 10px var(--cr),0 0 16px var(--cr)}
 .meta{display:flex;gap:20px;justify-content:center;margin:18px 0;color:var(--ink);flex-wrap:wrap}
 .cta-m{display:none}
@@ -59,7 +59,7 @@ main{max-width:1000px;margin:auto;padding:20px}
 .cd{display:flex;gap:12px;justify-content:center;margin:20px 0}.cd div{background:var(--card);border:2px solid var(--bd);box-shadow:3px 3px 0 var(--bd);border-radius:12px;padding:12px 16px;text-align:center;min-width:72px}.cd b{font-size:28px;display:block;color:var(--ac)}.cd span{font-size:12px;color:var(--mu)}
 
 /* PNG home title: PNG shape is used as a mask so the animated gradient still shows */
-.hero h1.himg{width:min(92%,760px);margin:12px auto;font-size:0;color:transparent;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-mask:var(--timg) center/contain no-repeat;mask:var(--timg) center/contain no-repeat;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
+.hero h1.himg{width:min(92%,760px);margin:12px auto;font-size:0;color:transparent;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 22%,var(--am) 45%,var(--ac2) 72%,var(--ac2) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-mask:var(--timg) center/contain no-repeat;mask:var(--timg) center/contain no-repeat;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
 
 /* ---------- Buttons ---------- */
 .btn{display:inline-block;background:var(--ac);color:var(--cr);border:2px solid var(--bd);padding:10px 22px;border-radius:26px;font-weight:700;cursor:pointer;font-size:14px;box-shadow:3px 3px 0 var(--bd);transition:transform .18s,box-shadow .18s,background .2s}
@@ -70,11 +70,11 @@ main{max-width:1000px;margin:auto;padding:20px}
 
 /* ---------- Headings, cards ---------- */
 h2{margin:40px 0 14px;font-weight:800}
-h2::after{content:"";display:block;height:8px;width:96px;margin-top:8px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--ac) 0 12px,var(--am) 12px 24px,var(--ac2) 24px 36px,var(--bl) 36px 48px);transition:width .8s cubic-bezier(.2,.8,.2,1) .2s}
+h2::after{content:"";display:block;height:8px;width:96px;margin-top:8px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--ac) 0 12px,var(--am) 12px 24px,var(--ac2) 24px 36px);transition:width .8s cubic-bezier(.2,.8,.2,1) .2s}
 h2.rv:not(.in)::after{width:0}
 .card{background:var(--card);border:2px solid var(--bd);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:5px 5px 0 var(--bd)}
 .house{display:flex;align-items:center;gap:14px}.house .r{font-size:26px;font-weight:800;color:var(--ac);width:34px}.house .n{flex:1;font-weight:600}.house .p{font-weight:800}
-.bar{height:12px;background:var(--cr);border:2px solid var(--bd);border-radius:8px;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--am),var(--ac2),var(--bl));transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
+.bar{height:12px;background:var(--cr);border:2px solid var(--bd);border-radius:8px;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--am),var(--ac2));transform-origin:left;animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
 @keyframes grow{from{transform:scaleX(0)}}
 select,input,textarea{background:var(--cr);color:var(--tx);border:2px solid var(--bd);border-radius:10px;padding:9px 12px;font:inherit;width:100%;transition:box-shadow .2s,border-color .2s}
 select:focus,input:focus,textarea:focus{outline:0;box-shadow:0 0 0 3px var(--am)}
