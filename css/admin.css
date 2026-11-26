@@ -59,9 +59,9 @@ body.ash [hidden]{display:none!important}
 
 /* leaderboard (right column) */
 .ash-lb{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #333;border-radius:12px;margin-bottom:8px;background:#0c0c0c}
-.ash-lb.t1{border-color:var(--am);background:rgba(248,189,90,.12)}
-.ash-lb.t2{border-color:var(--cr);background:rgba(241,231,232,.06)}
-.ash-lb.t3{border-color:var(--ac);background:rgba(196,39,39,.12)}
+.ash-lb.t1{border-color:var(--am);background:rgba(248,158,31,.12)}
+.ash-lb.t2{border-color:var(--cr);background:rgba(255,255,255,.06)}
+.ash-lb.t3{border-color:var(--ac);background:rgba(227,49,38,.12)}
 .ash-rk{width:26px;height:26px;border-radius:50%;background:#1a1a1a;border:1px solid #333;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
 .ash-lb.t1 .ash-rk{background:var(--am);color:#000;border-color:var(--am)}
 .ash-ln{flex:1;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
