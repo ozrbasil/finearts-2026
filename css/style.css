@@ -40,25 +40,26 @@ main{max-width:1000px;margin:auto;padding:20px}
 .sunglow{left:31%;top:46.5%;width:45%;height:25.4%;border-radius:50%;background:radial-gradient(circle,rgba(255,238,170,.85) 0%,rgba(248,158,31,.4) 42%,rgba(248,158,31,0) 70%);mix-blend-mode:soft-light;animation:glow 4.5s ease-in-out infinite alternate}
 @keyframes glow{from{opacity:.35;transform:scale(.94)}to{opacity:1;transform:scale(1.07)}}
 .hero small{display:inline-block;background:var(--ink);color:var(--am);letter-spacing:3px;font-size:12px;font-weight:700;padding:7px 18px;border-radius:30px}
-.hero h1{font-size:clamp(42px,11vw,92px);line-height:1.05;margin:14px 0 10px;background:linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(3px 3px 0 var(--ink));will-change:transform,opacity}
+.hero h1{font-size:clamp(42px,11vw,92px);line-height:1.05;margin:14px 0 10px;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(3px 3px 0 var(--ink));will-change:transform,opacity}
 .hero p{display:inline-block;max-width:560px;margin:6px auto;color:var(--ink);font-weight:600;font-size:15px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;border-radius:0!important;text-shadow:0 0 5px var(--cr),0 0 10px var(--cr),0 0 16px var(--cr)}
 .meta{display:flex;gap:20px;justify-content:center;margin:18px 0;color:var(--ink);flex-wrap:wrap}
 .cta-m{display:none}
 .logo-d{display:none}
 .meta span{background:var(--am);border:2px solid var(--bd);padding:4px 16px;border-radius:20px;font-weight:700;font-size:14px}
 .hero>small{animation:rise .8s cubic-bezier(.2,.8,.2,1) .05s both}
-.hero>h1{animation:rise .9s cubic-bezier(.2,.8,.2,1) .15s both,shine 4s linear 1s infinite}
+.hero>h1{animation:rise .9s cubic-bezier(.2,.8,.2,1) .15s both,shineText 3.6s ease-in-out 1s infinite}
 .hero>p{animation:rise .8s cubic-bezier(.2,.8,.2,1) .35s both}
 .hero>.meta{animation:rise .8s cubic-bezier(.2,.8,.2,1) .5s both}
 .hero>.btn{animation:rise .8s cubic-bezier(.2,.8,.2,1) .65s both,nudge 2.4s ease-in-out 1.6s infinite}
 .hero>img{animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
 @keyframes shine{from{background-position:100% 0}to{background-position:-100% 0}}
+@keyframes shineText{0%{background-position:0% 0,0 0}65%,100%{background-position:100% 0,0 0}}
 @keyframes rise{from{opacity:0;transform:translateY(30px) scale(.94)}}
 @keyframes nudge{0%,100%{translate:0 0}50%{translate:0 -4px}}
 .cd{display:flex;gap:12px;justify-content:center;margin:20px 0}.cd div{background:var(--card);border:2px solid var(--bd);box-shadow:3px 3px 0 var(--bd);border-radius:12px;padding:12px 16px;text-align:center;min-width:72px}.cd b{font-size:28px;display:block;color:var(--ac)}.cd span{font-size:12px;color:var(--mu)}
 
 /* PNG home title: PNG shape is used as a mask so the animated gradient still shows */
-.hero h1.himg{width:min(92%,760px);margin:12px auto;font-size:0;color:transparent;background:linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%;-webkit-mask:var(--timg) center/contain no-repeat;mask:var(--timg) center/contain no-repeat;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
+.hero h1.himg{width:min(92%,760px);margin:12px auto;font-size:0;color:transparent;background:linear-gradient(110deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 62%),linear-gradient(100deg,var(--ac) 0%,var(--ac) 18%,var(--am) 36%,var(--ac2) 60%,var(--bl) 82%,var(--bl) 100%);background-size:250% 100%,100% 100%;background-repeat:no-repeat;-webkit-mask:var(--timg) center/contain no-repeat;mask:var(--timg) center/contain no-repeat;-webkit-background-clip:border-box;background-clip:border-box;filter:none}
 
 /* ---------- Buttons ---------- */
 .btn{display:inline-block;background:var(--ac);color:var(--cr);border:2px solid var(--bd);padding:10px 22px;border-radius:26px;font-weight:700;cursor:pointer;font-size:14px;box-shadow:3px 3px 0 var(--bd);transition:transform .18s,box-shadow .18s,background .2s}
