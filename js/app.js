@@ -149,6 +149,13 @@ function bump(b,d){const i=b.parentElement.querySelector("input");i.value=(+i.va
 function markCard(){return `<div class="card"><b>Mark format</b> <span class="mu">(custom marks per position, comma separated)</span><br><br><input value="${S.pts.join(",")}" data-a="pm" placeholder="e.g. 10,7,5,3,1"><div class="mu" style="font-size:12px;margin:6px 0 10px">Position 1 gets the first number, position 2 the second, and so on. Positions beyond the list get 0. A single competition can use its own marks in "Competitions & results".</div></div>`}
 const setS=(k,v)=>{S.set[k]=v;save();nav("admin")};
 function settCard(){const f=[["name","Festival name (menu, posters, page title)"],["hero","Home title"],["tag","Tagline"],["venue","Venue"],["footer","Footer text"],["drive","Google Drive link for the \"More Photos\" button (https://… leave empty to hide the button)"]];return `<div class="card"><b>Site settings</b><br><br>${f.map(([k,l])=>`<label class="mu" style="font-size:13px">${l}</label><input value="${esc(S.set[k])}" data-a="sset" data-i="${k}" style="margin:4px 0 10px">`).join("")}<label class="mu" style="font-size:13px">Logo (PNG, shown at the top of the site)</label><div style="margin:6px 0 12px">${S.set.logo?`<img src="${S.set.logo}" alt="Logo" style="height:70px;display:block;margin-bottom:8px">`:""}<input type="file" accept="image/png" onchange="upLogo(this.files[0])">${S.set.logo?`<button class="btn d" style="padding:3px 12px;margin-top:6px" onclick="S.set.logo='';save();loadLogo();render()">Remove logo</button>`:""}</div><label class="mu" style="font-size:13px">Home title image (PNG, replaces the text title, gradient is kept)</label><div style="margin:6px 0 12px">${S.set.titleImg?`<img src="${S.set.titleImg}" alt="Title" style="height:60px;display:block;margin-bottom:8px;background:#444">`:""}<input type="file" accept="image/png" onchange="upTitle(this.files[0])">${S.set.titleImg?`<button class="btn d" style="padding:3px 12px;margin-top:6px" onclick="S.set.titleImg='';save();render()">Remove title image</button>`:""}</div><label class="mu" style="font-size:13px">Description</label><textarea rows="3" data-a="sset" data-i="desc" style="margin:4px 0 10px">${esc(S.set.desc)}</textarea><label class="mu" style="font-size:13px">About page text (leave a blank line between paragraphs; empty = default text)</label><textarea rows="8" data-a="sset" data-i="about" style="margin:4px 0 10px">${esc(S.set.about!=null?S.set.about:ABOUT_DEF)}</textarea><button class="btn s" onclick="S.set={...DEF};save();render()">Restore defaults</button></div>`}
+(function soraSetup(){
+  if(document.querySelector('link[data-sora]'))return;
+  const l=document.createElement("link");l.rel="stylesheet";l.dataset.sora="1";
+  l.href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap";
+  l.onload=()=>{if(document.fonts)Promise.all(["300","400","500","600","700","800"].map(w=>document.fonts.load(w+" 20px Sora"))).then(()=>{try{render()}catch(e){}}).catch(()=>{})};
+  document.head.appendChild(l);
+})();
 function poster(c,t){
 const bi=BGI[t-1],B=TPL[t-1],T=bi?{...B,ac:t===3?"#f89e1f":B.ac,tx:"#FFFFFF"}:B,
 cv=document.createElement("canvas");cv.width=1080;cv.height=1350;
@@ -161,32 +168,61 @@ if(bi){
   if(ov>0){x.fillStyle="rgba(0,0,0,"+ov+")";x.fillRect(0,0,1080,1350)}
 }
 const T3=t===3,NM=T3?"#e33126":T.ac,OT=T3?"#333333":T.ac,RT=T3?"#333333":T.tx,
-F="Sora,system-ui,sans-serif",L=140,
-fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.05*z)+"px"};
+F='"Sora", system-ui, sans-serif',L=140,
+fo=(w,z)=>{x.font=w+" "+z+"px "+F;if("letterSpacing" in x)x.letterSpacing=(-.04*z)+"px"};
 
-const no=pubList().indexOf(c)+1||1,NO=String(no).padStart(2,"0"),R=948;
-x.textAlign="right";x.fillStyle=OT;
-fo(700,36);x.fillText(NO,R,155);const nw=x.measureText(NO).width;
-fo(400,28);x.fillText("Result No ",R-nw,155);
-
+const no=pubList().indexOf(c)+1||1,NO=String(no).padStart(2,"0"),
+rs=c.res.slice().sort((a,b)=>a.pos-b.pos).slice(0,10),nr=Math.max(rs.length,1);
 x.textAlign="left";
-x.fillStyle=NM;fo(700,50);
-let ln=[],cur="";
-c.name.split(" ").forEach(w=>{const tt=cur?cur+" "+w:w;if(x.measureText(tt).width>800&&cur){ln.push(cur);cur=w}else cur=tt});
-ln.push(cur);ln=ln.slice(0,2);
-ln.forEach((q,i)=>x.fillText(q,L,381+i*62,800));
 
-const rs=c.res.slice().sort((a,b)=>a.pos-b.pos).slice(0,10),
-b0=477+(ln.length-1)*62,
-nr=Math.max(rs.length,1),
-pt=Math.min(100.5,nr>1?(1120-b0)/(nr-1):100.5),s=Math.min(1,pt/100.5);
-rs.forEach((r,i)=>{
-  const by=b0+i*pt;
-  x.fillStyle=RT;
-  fo(700,28*s);x.fillText(["1st","2nd","3rd"][r.pos-1]||r.pos+"th",L,by+10*s);
-  fo(700,36*s);x.fillText(r.name,224,by,740);
-  fo(300,24*s);x.fillText([resK(r),r.h].filter(Boolean).join(" • "),224,by+30*s,740);
-});
+// Competition name: 2 or more words -> 2 lines, 50 px apart
+const words=String(c.name||"").trim().split(/\s+/).filter(Boolean);
+let ln=[words.join(" ")];
+if(words.length>=2){
+  fo(700,50);let best=1,bd=Infinity;
+  for(let k=1;k<words.length;k++){const d=Math.abs(x.measureText(words.slice(0,k).join(" ")).width-x.measureText(words.slice(k).join(" ")).width);if(d<bd){bd=d;best=k}}
+  ln=[words.slice(0,best).join(" "),words.slice(best).join(" ")];
+}
+const drawName=(x0,y0)=>{x.textAlign="left";x.fillStyle=NM;fo(700,50);ln.forEach((q,i)=>x.fillText(q,x0,y0+i*50,800))};
+
+// "Result " (Light 34) + "NN" (Medium 34)
+const drawLabel=(x0,y0,right)=>{
+  fo(300,34);const rw=x.measureText("Result ").width;
+  fo(500,34);const nw=x.measureText(NO).width,sx=right?x0-(rw+nw):x0;
+  x.textAlign="left";x.fillStyle=OT;
+  fo(300,34);x.fillText("Result ",sx,y0);
+  fo(500,34);x.fillText(NO,sx+rw,y0);
+};
+
+// Result rows: 1st/2nd/3rd (Medium 25), name (Bold 36), class • team (Regular 22)
+const drawRows=(numX,nameX,y0,maxY)=>{
+  const pt=Math.min(100.5,nr>1?(maxY-y0)/(nr-1):100.5),s=Math.min(1,pt/100.5);
+  x.textAlign="left";
+  rs.forEach((r,i)=>{
+    const by=y0+i*pt;
+    x.fillStyle=RT;
+    fo(500,25*s);x.fillText(["1st","2nd","3rd"][r.pos-1]||r.pos+"th",numX,by+10*s);
+    fo(700,36*s);x.fillText(r.name,nameX,by,740);
+    fo(400,22*s);x.fillText([resK(r),r.h].filter(Boolean).join(" • "),nameX,by+30*s,740);
+  });
+};
+
+if(t===3){
+  // Template 3: vertical "Result NN" on the left, results top-right, name bottom-left
+  x.save();x.translate(212,585);x.rotate(-Math.PI/2);drawLabel(0,0,false);x.restore();
+  drawRows(332,399,345,740);
+  drawName(174,805);
+}else if(t===2){
+  // Template 2: "Result NN" top-right, name left, results below
+  drawLabel(948,190,true);
+  drawName(300,381);
+  drawRows(311,378,381+(ln.length-1)*50+110,1120);
+}else{
+  // Template 1: "Result NN" top-left above the name, results below
+  drawLabel(140,300,false);
+  drawName(140,381);
+  drawRows(140,224,381+(ln.length-1)*50+110,1120);
+}
 
 x.fillStyle=OT;fo(400,24);x.fillText(S.set.posterNote,L,1208);
 return cv}
@@ -503,4 +539,4 @@ document.querySelectorAll("#app h2,#app .card,#app .rc,#app .grid>*,#app .bkw").
 function render(){const [r,q]=(location.hash.slice(1)||"home").split("?");nav(r);document.body.classList.toggle("adm",r==="admin");document.body.classList.toggle("ash",r==="admin"&&admin);document.documentElement.classList.toggle("adm",r==="admin");bnRender();document.title=S.set.name+" | Annual Arts & Cultural Fest";$("#ft").textContent=S.set.footer+(S.upd?" • Updated "+new Date(S.upd).toLocaleString():"");clearInterval(tmr);
 $("#app").innerHTML=!LOADED&&r!=="admin"&&r!=="brochure"?'<div class="card mu">Loading…</div>':r==="result"?result(q):r==="gallery"?`<h2>Festival Gallery</h2>${gal()}<p>${morePhotos()}</p>`:r==="about"?about():r==="brochure"?brochure():r==="schedule"?schedule():r==="admin"?(admin?adminPanel():login()):home();
 if(LOADED&&(r==="home"||!r)){fill();tick();tmr=setInterval(tick,1000)}if(window.LK!==location.hash){window.scrollTo(0,0);window.LK=location.hash}fx();bar();if(r==="brochure")bkUI();reveal(r);if(r==="admin")noSpell()}
-addEventListener("hashchange",render);[0,1,2].forEach(loadBg);loadLogo();const rs=()=>{try{const sc=sessionStorage.getItem("sc");if(sc){sessionStorage.removeItem("sc");window.scrollTo(0,+sc)}}catch(e){}};if(REMOTE){try{const hs=sessionStorage.getItem("hs");if(hs&&!location.hash)location.hash=hs;sessionStorage.removeItem("hs")}catch(e){}}render();loadData(true);setInterval(()=>loadData(false),8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadData(false)});setTimeout(rs,300);if(document.fonts)Promise.all(["300","400","600","700","800"].map(w=>document.fonts.load(w+" 20px Sora"))).then(render).catch(()=>{});
+addEventListener("hashchange",render);[0,1,2].forEach(loadBg);loadLogo();const rs=()=>{try{const sc=sessionStorage.getItem("sc");if(sc){sessionStorage.removeItem("sc");window.scrollTo(0,+sc)}}catch(e){}};if(REMOTE){try{const hs=sessionStorage.getItem("hs");if(hs&&!location.hash)location.hash=hs;sessionStorage.removeItem("hs")}catch(e){}}render();loadData(true);setInterval(()=>loadData(false),8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadData(false)});setTimeout(rs,300);if(document.fonts)Promise.all(["300","400","500","600","700","800"].map(w=>document.fonts.load(w+" 20px Sora"))).then(render).catch(()=>{});
