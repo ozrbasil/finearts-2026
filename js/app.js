@@ -175,11 +175,12 @@ const no=pubList().indexOf(c)+1||1,NO=String(no).padStart(2,"0"),
 rs=c.res.slice().sort((a,b)=>a.pos-b.pos).slice(0,10),nr=Math.max(rs.length,1);
 x.textAlign="left";
 
-// Competition name: 2 or more words -> 2 lines, 50 px apart
+// Competition name: one line; becomes 2 lines (50 px apart) only when it is too wide
 const words=String(c.name||"").trim().split(/\s+/).filter(Boolean);
 let ln=[words.join(" ")];
-if(words.length>=2){
-  fo(700,50);let best=1,bd=Infinity;
+fo(700,50);
+if(words.length>=2&&x.measureText(ln[0]).width>620){
+  let best=1,bd=Infinity;
   for(let k=1;k<words.length;k++){const d=Math.abs(x.measureText(words.slice(0,k).join(" ")).width-x.measureText(words.slice(k).join(" ")).width);if(d<bd){bd=d;best=k}}
   ln=[words.slice(0,best).join(" "),words.slice(best).join(" ")];
 }
@@ -210,18 +211,18 @@ const drawRows=(numX,nameX,y0,maxY)=>{
 if(t===3){
   // Template 3: vertical "Result NN" on the left, results top-right, name bottom-left
   x.save();x.translate(212,585);x.rotate(-Math.PI/2);drawLabel(0,0,false);x.restore();
-  drawRows(332,399,345,740);
-  drawName(174,805);
+  drawRows(335,403,345,740);
+  drawName(177,805);
 }else if(t===2){
   // Template 2: "Result NN" top-right, name left, results below
-  drawLabel(948,190,true);
-  drawName(300,381);
-  drawRows(311,378,381+(ln.length-1)*50+110,1120);
+  drawLabel(944,204,true);
+  drawName(302,377);
+  drawRows(313,381,377+(ln.length-1)*50+115,1120);
 }else{
   // Template 1: "Result NN" top-left above the name, results below
-  drawLabel(140,300,false);
-  drawName(140,381);
-  drawRows(140,224,381+(ln.length-1)*50+110,1120);
+  drawLabel(160,300,false);
+  drawName(160,362);
+  drawRows(160,229,362+(ln.length-1)*50+115,1120);
 }
 
 x.fillStyle=OT;fo(400,24);x.fillText(S.set.posterNote,L,1208);
